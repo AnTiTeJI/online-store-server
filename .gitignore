@@ -1,3 +1,5 @@
 node_modules
 static
-/*.env
+*.env
+tsconfig.json
+.eslintrc.js
