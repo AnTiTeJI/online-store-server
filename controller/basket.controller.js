@@ -27,7 +27,7 @@ class BasketController {
         try {
             const user = await userService.findUserByTokenId(req.headers.authorization)
             const products = await basketService.getProductFromBasket(await user.getBasket())
-            res.status(200).json(products)
+            res.status(200).json({ products })
         } catch (error) {
             next(error)
         }
@@ -37,6 +37,7 @@ class BasketController {
             const user = await userService.findUserByTokenId(req.headers.authorization)
             const basket = await user.getBasket()
             await basketService.RemoveProductsFromStock(basket)
+            res.status(200).json('Success')
         } catch (error) {
             next(error)
         }

@@ -11,7 +11,7 @@ function CheckRole(permissions) {
         try {
             const auth = req.headers.authorization
             if (!auth)
-                throw ApiError.unathorized()
+                throw ApiError.forbidden()
             const token = auth.split(' ')[1]
             if (!tokenService.validateAccessToken(token))
                 throw ApiError.unathorized()

@@ -1,5 +1,4 @@
 const categoryService = require("../service/category.service")
-const { CalculateOffset } = require("../utils/ApiFunction")
 
 class CategoryController {
     async createCategories(req, res, next) {
@@ -27,7 +26,9 @@ class CategoryController {
     }
     async getCategories(req, res, next) {
         try {
-            const { offset, limit } = CalculateOffset(req.query.page, req.query.limit)
+            const { page, limit } = req.query
+            const offset = (page * limit) - limit
+
             const categories = await categoryService.getCategories(offset, limit)
 
             return res.status(200).json({ categories })
@@ -38,7 +39,8 @@ class CategoryController {
     async getChildCategories(req, res, next) {
         try {
             const parentName = req.params.name
-            const { offset, limit } = CalculateOffset(req.query.page, req.query.limit)
+            const { page, limit } = req.query
+            const offset = (page * limit) - limit
 
             const categories = await categoryService.getCategories(offset, limit, parentName)
 

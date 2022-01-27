@@ -72,7 +72,7 @@ class ProductController {
     async getProductImages(req, res, next) {
         try {
             const product = await productService.findProductById(req.params.id)
-            if (req.query.img)
+            if (req.query.main)
                 return res.status(200).json({
                     images: await imageService.getProductImages(product, true)
                 })

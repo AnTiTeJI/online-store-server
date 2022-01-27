@@ -6,7 +6,7 @@ const sequelize = require('./database')
 const ErrorMiddleware = require('./middleware/error.middleware')
 const router = require('./router/$router')
 const cors = require('cors')
-const { env } = require('process')
+const bcrypt = require('bcrypt')
 require('dotenv').config()
 require('./model/assotiation')
 
@@ -31,3 +31,4 @@ function start() {
 }
 
 start()
+

@@ -9,7 +9,6 @@ class UserController {
     async registration(req, res, next) {
         try {
             const { email, password } = req.body
-            const { name, lastname, adress, phoneNumber } = req.body
             await userService.findUserByEmail(email)
                 .then(user => {
                     if (user)
@@ -40,13 +39,14 @@ class UserController {
     }
     async login(req, res, next) {
         try {
+            console.log('Console')
             const { email, password } = req.body
             const user = await userService.findUserByEmail(email)
 
             if (!user)
                 throw ApiError.badRequest('Invalid email or password')
 
-            if (!userService.login(user.password, password))
+            if (!await userService.login(password, user.password))
                 throw ApiError.badRequest('Invalid email or password')
 
             const tokens = await tokenService.generateAndSaveToken({
@@ -110,6 +110,7 @@ class UserController {
     }
     async changeUserDetails(req, res, next) {
         try {
+            console.log('Change user details')
             const user = await userService.findUserByTokenId(req.headers.authorization)
             const newUser = await userService.changeUserDetails(user, req.body)
             return res.status(200).json({
@@ -124,40 +125,10 @@ class UserController {
     async changeUserPassword(req, res, next) {
         try {
             const user = await userService.findUserByTokenId(req.headers.authorization)
-            await userService.changeUserPassword(req.body)
+            await userService.changeUserPassword(user, req.body)
             return res.status(200).json({ msg: 'Success' })
         }
         catch (error) {
-            next(error)
-        }
-    }
-    async ResetOfRefleshRoles(req, res, next) {
-        try {
-            const owner = await userService.findUserByTokenId(req.headers.authorization)
-            const user = await userService.findUserById(req.params.id)
-
-            if (await roleService.CheckRightOwner(owner, user, req.body.roles)) {
-                if (req.body.roles) {
-                    await roleService.SetUserRoles(user, roles)
-                }
-                else await roleService.ResetUserRoles(user)
-            }
-            return res.status(200).json({ msg: 'Success' })
-        } catch (error) {
-            next(error)
-        }
-    }
-    async AddRoles(req, res, next) {
-        try {
-            const owner = await userService.findUserByTokenId(req.headers.authorization)
-            const user = await userService.findUserById(req.params.id)
-
-            if (await roleService.CheckRightOwner(owner, user, req.body.roles))
-                await roleService.SetUserRoles(user, req.body.roles)
-            else throw ApiError.forbidden()
-
-            return res.status(200).json({ msg: 'Success' })
-        } catch (error) {
             next(error)
         }
     }

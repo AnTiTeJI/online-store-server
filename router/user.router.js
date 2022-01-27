@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const basketController = require('../controller/basket.controller')
+const roleController = require('../controller/role.controller')
 const userController = require('../controller/user.controller')
 const CheckRole = require('../middleware/role.middleware')
 const { Permissions } = require('../roles')
@@ -24,7 +25,7 @@ userRouter.post(userRoutes.buyProductsFromBasket,
 
 userRouter.post(userRoutes.addRoles,
     CheckRole(Permissions.editRole),
-    userController.AddRoles)
+    roleController.AddRoles)
 
 userRouter.put(userRoutes.changeUserDetails,
     CheckRole(),
@@ -36,7 +37,7 @@ userRouter.put(userRoutes.changeUserPassword,
 
 userRouter.put(userRoutes.resetOfRefleshRoles,
     CheckRole(Permissions.editRole),
-    userController.ResetOfRefleshRoles)
+    roleController.ResetOfRefleshRoles)
 
 
 userRouter.get(userRoutes.refresh,

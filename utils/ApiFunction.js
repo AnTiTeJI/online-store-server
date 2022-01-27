@@ -9,12 +9,6 @@ class ApiFunction {
             return errors
         return false
     }
-    CalculateOffset(page = 1, limit = 10) {
-        return {
-            offset: (page || 1) * (limit || 10) - (limit || 10),
-            limit: limit || 10
-        }
-    }
 }
 
 module.exports = new ApiFunction()

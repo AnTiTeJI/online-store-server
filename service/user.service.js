@@ -26,10 +26,8 @@ class UserService {
         const hash = await bcrypt.hash(password, 7)
         return await User.create({ email, password: hash, roles: `["${RolePermissions.Buyer.role}"]` })
     }
-    async login(hash, password) {
-        const equal = await bcrypt.compare(hash, password)
-        if (!equal)
-            return false
+    async login(password, hash) {
+        return await bcrypt.compare(password, hash)
     }
     async refresh(token) {
         const user = await this.findUserById(jwt.decode(token).id)
@@ -41,26 +39,31 @@ class UserService {
     }
     async changeUserDetails(user, body) {
         const userDetail = await user.getUserDetail()
-        if (user.email && user.email != body.email)
-            user.email = body.email
 
-        if (userDetail.name && userDetail.name != body.name)
+        if (body.email && user.email != body.email) {
+            user.email = body.email
+        }
+
+        if (body.name && userDetail.name != body.name) {
             userDetail.name = body.name
 
-        if (userDetail.lastname && userDetail.lastname != body.lastname)
+        }
+
+
+        if (body.lastname && userDetail.lastname != body.lastname)
             userDetail.lastname = body.lastname
 
-        if (userDetail.phoneNumber && userDetail.phoneNumber != body.phoneNumber)
+        if (body.phoneNumber && userDetail.phoneNumber != body.phoneNumber)
             userDetail.phoneNumber = body.phoneNumber
 
-        if (userDetail.adress && userDetail.adress != body.adress)
+        if (body.adress && userDetail.adress != body.adress)
             userDetail.adress = body.adress
 
-        await user.save()
         await userDetail.save()
-        return user
+        return await user.save()
     }
     async changeUserPassword(user, body) {
+        console.log(body)
         if (body.newPassword && body.currentPassword) {
             if (await bcrypt.compare(body.currentPassword, user.password)) {
                 const hash = await bcrypt.hash(body.newPassword, 8)
