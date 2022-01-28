@@ -9,5 +9,4 @@ const router: Router = Router();
 router.use("/", userRouter);
 router.use("/product", productRouter);
 router.use("/category", categoryRouter);
-
-export = router;
+export default router;

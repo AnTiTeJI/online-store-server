@@ -1,10 +1,11 @@
 import { Characteristic } from "../model/product.model";
-import { ProductModel } from "../model/product.types";
+import { CharacteristicModel, ProductModel } from "../model/product.types";
+import { ICharacteristic } from "./$types";
 
 class CharacteristicService {
-    async addCharacteristics(product: ProductModel, characteristics: any[]) {
+    async addCharacteristics(product: ProductModel, characteristics: ICharacteristic[]): Promise<void> {
         for (let ch of characteristics) {
-            const chDb = await Characteristic.findOne({ where: { name: ch.name, value: ch.value } });
+            const chDb: CharacteristicModel | null = await Characteristic.findOne({ where: { name: ch.name, value: ch.value } });
             if (chDb)
                 await product.addCharacteristic(chDb);
             else
@@ -12,5 +13,4 @@ class CharacteristicService {
         }
     }
 }
-
-export = new CharacteristicService();
+export default new CharacteristicService();

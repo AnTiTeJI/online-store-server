@@ -1,57 +1,57 @@
-import { NextFunction, Request, Response } from "express";
-
-const categoryService = require("../service/category.service");
+import { NextFunction, Request, Response, } from "express";
+import categoryService from "../service/category.service";
+import { CategoryBody } from "./$types";
 
 class CategoryController {
-    async createCategories(req: Request, res: Response, next: NextFunction) {
+    async createCategories(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const { categories } = req.body;
+            const { categories } = req.body as CategoryBody;
             for (let category of categories) {
                 await categoryService.createCategory(category);
             }
-            return res.status(201).json({ msg: "Success" });
+            res.status(201).json({ msg: "Success" });
         } catch (error) {
             next(error);
         }
     }
-    async createChildCategories(req: Request, res: Response, next: NextFunction) {
+    async createChildCategories(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const parentName = req.params.name;
-            const { categories } = req.body;
+            const { categories } = req.body as CategoryBody;
             for (let category of categories) {
                 await categoryService.createCategory(category, parentName);
             }
-            return res.status(201).json({ msg: "Success" });
+            res.status(201).json({ msg: "Success" });
         } catch (error) {
             next(error);
         }
     }
-    async getCategories(req: Request, res: Response, next: NextFunction) {
+    async getCategories(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             let offset: number = 0;
             const { page, limit } = req.query;
             if (typeof page === "number" && typeof limit === "number")
                 offset = (page * limit) - limit;
-            const categories = await categoryService.getCategories(offset, limit);
+            const categories = await categoryService.getCategories(offset, Number(limit));
 
-            return res.status(200).json({ categories });
+            res.status(200).json({ categories });
         } catch (error) {
             next(error);
         }
     }
-    async getChildCategories(req: Request, res: Response, next: NextFunction) {
+    async getChildCategories(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
             const parentName = req.params.name;
             let offset: number = 0;
             const { page, limit } = req.query;
             if (typeof page === "number" && typeof limit === "number")
                 offset = (page * limit) - limit;
-            const categories = await categoryService.getCategories(offset, limit, parentName);
+            const categories = await categoryService.getCategories(offset, Number(limit), parentName);
 
-            return res.status(200).json({ categories });
+            res.status(200).json({ categories });
         } catch (error) {
             next(error);
         }
     }
 }
-export = new CategoryController();
+export default new CategoryController();

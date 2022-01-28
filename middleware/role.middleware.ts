@@ -8,13 +8,13 @@ import userService from "../service/user.service";
 
 
 
-function CheckRole(permissions: any = null) {
+function CheckRole(permissions: string[] | string | null = null) {
     return async function RoleMiddleware(req: Request, res: Response, next: NextFunction) {
         try {
-            const auth = req.headers?.authorization;
+            const auth: string = req.headers?.authorization;
             if (!auth)
                 throw ApiError.forbidden();
-            const token = auth.split(" ")[1];
+            const token: string = auth.split(" ")[1];
             if (!tokenService.validateAccessToken(token))
                 throw ApiError.unathorized();
 
@@ -30,9 +30,14 @@ function CheckRole(permissions: any = null) {
 
                 if (userPermission.includes("all"))
                     return next();
-                for (let pr of permissions)
-                    if (!userPermission.includes(pr))
+                if (typeof permissions === "string") {
+                    if (!userPermission.includes(permissions))
                         throw ApiError.forbidden("Not enough rights");
+                }
+                else
+                    for (let pr of permissions)
+                        if (!userPermission.includes(pr))
+                            throw ApiError.forbidden("Not enough rights");
             }
             next();
         } catch (error) {

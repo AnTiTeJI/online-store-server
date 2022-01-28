@@ -3,19 +3,20 @@ import { decode, JwtPayload } from "jsonwebtoken";
 import ApiError from "../error/ApiError";
 import { User } from "../model/user.model";
 import { UserModel } from "../model/user.types";
+import { UserChangePassword, UserDetails } from "./$types";
 import tokenService from "./token.service";
 
 class UserService {
-    async findUserById(id: number) {
+    async findUserById(id: number): Promise<UserModel> {
         const user = await User.findByPk(id);
         if (!user)
             throw ApiError.badRequest("User not found");
         return user;
     }
-    async findUserByEmail(email: string) {
+    async findUserByEmail(email: string): Promise<UserModel | null> {
         return await User.findOne({ where: { email } });
     }
-    async findUserByTokenId(auth: string | undefined) {
+    async findUserByTokenId(auth: string | undefined): Promise<UserModel> {
         if (typeof auth === "undefined")
             throw ApiError.forbidden();
         const token = auth.split(" ")[1];
@@ -24,15 +25,15 @@ class UserService {
 
         return await this.findUserById((decode(token) as JwtPayload).id);
     }
-    async registration(email: string, password: string) {
+    async registration(email: string, password: string): Promise<UserModel> {
         const hash = await bcrypt.hash(password, 7);
         // eslint-disable-next-line quotes
         return await User.create({ email, password: hash, roles: `["Buyer"]` });
     }
-    async login(password: string, hash: string) {
+    async login(password: string, hash: string): Promise<boolean> {
         return await bcrypt.compare(password, hash);
     }
-    async refresh(token: string) {
+    async refresh(token: string): Promise<UserModel> {
         const user = await this.findUserByTokenId(token);
 
         if (!user)
@@ -41,8 +42,8 @@ class UserService {
             throw ApiError.unathorized();
         return user;
     }
-    async changeUserDetails(user: UserModel, body: any) {
-        const userDetails = await user.getUserDetails();
+    async changeUserDetails(user: UserModel, body: UserDetails): Promise<UserModel> {
+        const userDetails = await user.getUserDetail();
 
         if (body.email && user.email != body.email) {
             user.email = body.email;
@@ -66,7 +67,7 @@ class UserService {
         await userDetails.save();
         return await user.save();
     }
-    async changeUserPassword(user: UserModel, body: any) {
+    async changeUserPassword(user: UserModel, body: UserChangePassword): Promise<void> {
         console.log(body);
         if (body.newPassword && body.currentPassword) {
             if (await bcrypt.compare(body.currentPassword, user.password)) {
@@ -78,4 +79,4 @@ class UserService {
     }
 }
 
-export = new UserService()
+export default new UserService();

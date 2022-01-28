@@ -32,4 +32,4 @@ productRouter.post(productRoutes.addProductImages,
 
 
 
-export = productRouter;
+export default productRouter;

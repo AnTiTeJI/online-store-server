@@ -32,4 +32,4 @@ categoryRouter.post(categoryRoutes.createTemplate,
     CheckRole(CustomPermissions.createTemplate),
     templateController.createProductTemplate);
 
-export = categoryRouter;
+export default categoryRouter;

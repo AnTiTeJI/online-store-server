@@ -12,9 +12,6 @@ const userRouter: Router = Router();
 
 userRouter.post(userRoutes.registration, UserValidator, userController.registration);
 userRouter.post(userRoutes.login, userController.login);
-userRouter.post(userRoutes.logout,
-    CheckRole(),
-    userController.logout);
 
 userRouter.post(userRoutes.addProductToBasket,
     CheckRole(CustomPermissions.editBasket),
@@ -27,6 +24,10 @@ userRouter.post(userRoutes.buyProductsFromBasket,
 userRouter.post(userRoutes.addRoles,
     CheckRole(CustomPermissions.editRole),
     roleController.AddRoles);
+
+userRouter.put(userRoutes.logout,
+    CheckRole(),
+    userController.logout);
 
 userRouter.put(userRoutes.changeUserDetails,
     CheckRole(),
@@ -58,4 +59,4 @@ userRouter.delete(userRoutes.removeProductFromBasket,
 
 
 
-export = userRouter;
+export default userRouter;

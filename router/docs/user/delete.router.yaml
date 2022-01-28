@@ -1,0 +1,22 @@
+paths:
+  /basket/pr:id/remove:
+    delete:
+      tags:
+        - User
+      summary: Remove product from basket
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          type: integer
+          description: Product id
+          required: true
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: "#components/responses/resSuccess"
+        400:
+          $ref: "#components/responses/badRequest"
+        403:
+          $ref: "#components/responses/forbidden"

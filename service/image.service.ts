@@ -2,17 +2,17 @@ import { UploadedFile } from "express-fileupload";
 import uuid from "uuid";
 import fs from "fs";
 import path from "path";
-import { CategoryModel, ProductModel } from "../model/product.types";
+import { CategoryModel, ImageModel, ProductModel } from "../model/product.types";
 class ImageService {
-    async addProductImage(product: ProductModel, image: UploadedFile, main: boolean = false) {
-        const productPath = path.join("./static/images", product.name);
+    async addProductImage(product: ProductModel, image: UploadedFile, main: boolean = false): Promise<string> {
+        const productPath: string = path.join("./static/images", product.name);
         if (!fs.existsSync(productPath)) {
             fs.mkdir(productPath, err => console.log(`mkdir error\n${err}`));
         }
 
         if (main) {
             image.name = "main.jpg";
-            const imagesDb = await product.getImages();
+            const imagesDb: ImageModel[] = await product.getImages();
             fs.readdir(productPath, (err, files) => {
                 for (const file of files) {
                     if (file.split(".")[0] == "main") {
@@ -33,9 +33,9 @@ class ImageService {
         return image.name;
     }
 
-    async getProductImages(product: ProductModel, main: boolean = false) {
-        const imagesDb = await product.getImages();
-        const images = [];
+    async getProductImages(product: ProductModel, main: boolean = false): Promise<string | string[]> {
+        const imagesDb: ImageModel[] = await product.getImages();
+        const images: string[] = [];
         if (main) {
             for (const image of imagesDb) {
                 if (image.name.split(".")[0] == "main") { return path.join("images", image.name); }
@@ -48,8 +48,8 @@ class ImageService {
         return images;
     }
 
-    async addCategoryImage(category: CategoryModel, image: UploadedFile) {
-        const categoryPath = path.join("./static/categories/");
+    async addCategoryImage(category: CategoryModel, image: UploadedFile): Promise<void> {
+        const categoryPath: string = path.join("./static/categories/");
 
         if (!fs.existsSync(categoryPath)) {
             fs.mkdir(categoryPath, err => console.log(`mkdir error\n${err}`));
@@ -60,10 +60,10 @@ class ImageService {
         await category.createImage({ name: image.name });
     }
 
-    async getCategoryImage(category: CategoryModel) {
-        const image = await category.getImage();
+    async getCategoryImage(category: CategoryModel): Promise<string> {
+        const image: ImageModel = await category.getImage();
         return path.join("categories", image.name);
     }
 }
 
-export = new ImageService()
+export default new ImageService();

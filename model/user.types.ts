@@ -1,4 +1,4 @@
-import { HasOneCreateAssociationMixin, BelongsToManyAddAssociationMixin, BelongsToManyGetAssociationsMixin, HasOneGetAssociationMixin, HasOneSetAssociationMixin, Model, Optional } from "sequelize/dist";
+import { HasOneCreateAssociationMixin, BelongsToManyAddAssociationMixin, BelongsToManyGetAssociationsMixin, HasOneGetAssociationMixin, Model, Optional } from "sequelize/dist";
 import { ProductModel } from "./product.types";
 
 interface UserArttributes {
@@ -10,10 +10,10 @@ interface UserArttributes {
 interface UserCreationAttributes extends Optional<UserArttributes, "id"> {
 }
 export interface UserModel extends Model<UserArttributes, UserCreationAttributes>, UserArttributes {
-    getUserDetails: HasOneGetAssociationMixin<UserDetailsModel>,
-    createUserDetails: HasOneSetAssociationMixin<UserDetailsModel, any>,
+    getUserDetail: HasOneGetAssociationMixin<UserDetailsModel>,
+    createUserDetail: HasOneCreateAssociationMixin<UserDetailsModel>,
     getBasket: HasOneGetAssociationMixin<BasketModel>,
-    createBasket: HasOneSetAssociationMixin<BasketModel, any>,
+    createBasket: HasOneCreateAssociationMixin<BasketModel>,
     getToken: HasOneGetAssociationMixin<TokenModel>,
     createToken: HasOneCreateAssociationMixin<TokenModel>
 }

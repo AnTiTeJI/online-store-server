@@ -4,10 +4,8 @@ import { body, validationResult } from "express-validator";
 
 function ValResult(req: Request, res: Response, next: NextFunction) {
     const result = validationResult(req);
-    if (result.array.length)
-        return res.status(400).json({
-            errors: result.array
-        });
+    console.log(result.array);
+
     next();
 }
 export const UserValidator = [

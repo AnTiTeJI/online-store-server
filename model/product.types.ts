@@ -48,7 +48,7 @@ interface CategoryCreationAttributes extends Optional<CategoryAttributes, "id" |
 }
 export interface CategoryModel extends Model<CategoryAttributes, CategoryCreationAttributes>, CategoryAttributes {
     getChild: HasManyGetAssociationsMixin<CategoryModel>,
-    createChild: HasManyCreateAssociationMixin<CategoryModel, any>,
+    createChild: HasManyCreateAssociationMixin<CategoryModel, keyof CategoryCreationAttributes>,
     getTemplate: HasOneGetAssociationMixin<TemplateModel>,
     createTemplate: HasOneCreateAssociationMixin<TemplateModel>,
     getImage: HasOneGetAssociationMixin<ImageModel>,

@@ -1,0 +1,71 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    UserDetail:
+      properties:
+        email:
+          type: string
+        roles:
+          type: string
+          description: User roles
+        name:
+          type: string
+        lastname:
+          type: string
+        phoneNumber:
+          type: string
+        adress:
+          type: string
+    Product:
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  price:
+                    type: integer
+                  count:
+                    type: integer
+                  discount:
+                    type: integer
+                  description:
+                    type: string
+              characterisctics:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    value:
+                      type: string
+              categories:
+                type: array
+                items:
+                  type: string
+              preference:
+                type: object
+                properties:
+                  popular:
+                    type: integer
+                  rating:
+                    type: integer

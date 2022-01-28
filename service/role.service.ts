@@ -3,18 +3,18 @@ import { UserModel } from "../model/user.types";
 import { RolePermissions } from "../roles";
 
 class RoleService {
-    async CheckRightOwner(owner: UserModel, user: UserModel, roles: string[] = []) {
-        const ownerRoles = await this.GetUserRoles(owner);
-        const userRoles = await this.GetUserRoles(user);
+    async CheckRightOwner(owner: UserModel, user: UserModel, roles: string[] = []): Promise<boolean> {
+        const ownerRoles = this.GetUserRoles(owner);
+        const userRoles = this.GetUserRoles(user);
 
         let ownRating = 100, userRating = 100;
-        for (let role of ownerRoles) {
-            if (ownRating > RolePermissions[role].rating)
-                ownRating = RolePermissions[role].rating;
+        for (let role of RolePermissions) {
+            if (ownerRoles.includes(role.role) && ownRating > role.rating)
+                ownRating = role.rating;
         }
-        for (let role of userRoles) {
-            if (userRating > RolePermissions[role].rating)
-                userRating = RolePermissions[role].rating;
+        for (let role of RolePermissions) {
+            if (userRoles.includes(role.role) && userRating > role.rating)
+                userRating = role.rating;
         }
 
         if (ownRating >= userRating)
@@ -25,31 +25,31 @@ class RoleService {
                     return false;
         return true;
     }
-    async AddUserRole(user: UserModel, role: string) {
+    async AddUserRole(user: UserModel, role: string): Promise<void> {
         let roles = JSON.parse(user.roles);
         roles.push(role);
         user.roles = JSON.stringify(roles);
         await user.save();
     }
-    async SetUserRoles(user: UserModel, roles: any[]) {
+    async SetUserRoles(user: UserModel, roles: string[]): Promise<void> {
         user.roles = JSON.stringify(roles);
         await user.save();
     }
-    async ResetUserRoles(user: UserModel) {
+    async ResetUserRoles(user: UserModel): Promise<void> {
         user.roles = "Buyer";
         await user.save();
     }
-    async RemoveUserRole(user: UserModel, role: string) {
+    async RemoveUserRole(user: UserModel, role: string): Promise<void> {
         let roles = JSON.parse(user.roles);
         if (!roles.includes(role))
             throw ApiError.badRequest("The user does`nt have a current role");
         user.roles = JSON.stringify(roles.filter((rl: string) => rl != role));
         await user.save();
     }
-    GetUserRoles(user: UserModel) {
+    GetUserRoles(user: UserModel): string[] {
         return JSON.parse(user.roles);
     }
 
 }
 
-export = new RoleService()
+export default new RoleService();
