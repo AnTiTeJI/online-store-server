@@ -1,0 +1,50 @@
+paths:
+  /product/create:
+    post:
+      tags:
+        - Product
+      summary: Create new product
+      produces:
+        - application/json
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/ProductRequestBody"
+      responses:
+        200:
+          description: Return product id
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer         
+        404:
+          $ref: "#components/responses/notFound"
+  /product//pr:id/images/add:
+    post:
+      tags:
+      - Product
+      summary: Add images to product
+      produces:
+        - application/json
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          type: integer
+          required: true
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                image:
+                  description: Get images
+                  type: object
+      responses:
+        200:
+          $ref: "#components/responses/resSuccess"

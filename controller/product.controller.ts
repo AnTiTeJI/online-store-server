@@ -32,7 +32,6 @@ class ProductController {
         characteristics,
       });
       res.status(200).json({
-        msg: "Success",
         id: productModel.id,
       });
     } catch (error) {

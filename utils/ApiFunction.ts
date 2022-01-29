@@ -6,6 +6,9 @@ class ApiFunction {
     });
     if (errors.length) return errors;
   }
+  isStringArray(object: any): object is string[] {
+    return object;
+  }
 }
 
 export = new ApiFunction();

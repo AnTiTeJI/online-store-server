@@ -22,6 +22,28 @@ components:
                 type: string
           example:
             msg: Bad request
+    unathorized:
+      description: Unathorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              msg:
+                type: string
+          example:
+            msg: Unathorized
+    notFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              msg:
+                type: string
+          example:
+            msg: Not found
     resSuccess:
       description: Success
       content:

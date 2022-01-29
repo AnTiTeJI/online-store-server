@@ -21,7 +21,7 @@ class BasketController {
         Number(req.params.id)
       );
       await basketService.addProductToBasket(await user.getBasket(), product);
-      res.status(201).json("Success");
+      res.status(200).json("Success");
     } catch (error) {
       next(error);
     }

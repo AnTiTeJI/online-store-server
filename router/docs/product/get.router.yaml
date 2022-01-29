@@ -1,0 +1,111 @@
+paths:
+  /product/all:
+    get:
+      tags:
+      - Product
+      summary: Get all products
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          type: integer
+          required: true
+        - name: limit
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/ProductFullBody"
+              example:
+                product:
+                  id: 14
+                  name: "Samsung Galaxy A32"
+                  price: 8399
+                  count: 12
+                  discount: 0
+                  description: Mobile phone
+                categories:
+                  - "Mobile"
+                  - "Samsung"
+                characteristics:
+                  - name: RAM
+                    value: 4GB
+                  - name: Memory
+                    value: 128GB
+                preference:
+                  popular: 12
+                  rating: 3.5 
+
+  /product/pr:id:
+    get:
+      tags: 
+      - Product
+      summary: Get product
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/ProductFullBody"
+              example:
+                product:
+                  id: 14
+                  name: "Samsung Galaxy A32"
+                  price: 8399
+                  count: 12
+                  discount: 0
+                  description: Mobile phone
+                categories:
+                  - "Mobile"
+                  - "Samsung"
+                characteristics:
+                  - name: RAM
+                    value: 4GB
+                  - name: Memory
+                    value: 128GB
+                preference:
+                  popular: 12
+                  rating: 3.5 
+        404:
+          $ref: "#components/responses/notFound"
+  /product/pr:id/images:
+    get:
+      tags:
+        - Product
+      summary: Get product images
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          type: integer
+          required: true
+      responses:
+        200:
+          description: Path of images
+          content:
+            application/json:
+              schema:
+                properties:
+                  images:
+                    type: array
+                    items:
+                      type: string
+              example:
+                - '/Samsung Galaxy A32/main.js'
+                - '/Samsung Galaxy A32/random.js'
+
+        404:
+          $ref: "#components/responses/notFound"

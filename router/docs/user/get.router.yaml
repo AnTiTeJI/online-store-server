@@ -23,8 +23,8 @@ paths:
                 lastname: Karpatenko
                 phoneNumber: "+380968165439"
                 adress: "Kyiv, Mahistra'na vulytsya, 10033"
-        400:
-          $ref: "#components/responses/badRequest"
+        401:
+          $ref: "#components/responses/unathorized"
         403:
           $ref: "#components/responses/forbidden"
   /basket:
@@ -42,7 +42,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Product"
+                  $ref: "#/components/schemas/Product"
               example:
                 - product:
                     id: 1
@@ -82,8 +82,10 @@ paths:
                   preference:
                     popular: 100
                     rating: 5
+          401:
+            $ref: "#components/responses/unathorized"
           403:
-          $ref: "#components/responses/forbidden"
+            $ref: "#components/responses/forbidden"
   /refresh:
     get:
       tags:
@@ -93,6 +95,12 @@ paths:
         - application/json
       security:
         - bearerAuth: []
+      parameters:
+        - in: header
+          name: Cookies
+          type: string
+          required: true
+
       responses:
         200:
           $ref: "#components/responses/tokenSuccess"

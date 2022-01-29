@@ -1,10 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CategoryModel } from "../model/product.types";
-import { ICharacteristic } from "../service/$types";
 import categoryService from "../service/category.service";
 import templateService from "../service/template.service";
-import { CharacteristicBody } from "./$types";
-
 class TemplateController {
   async createProductTemplate(
     req: Request,
@@ -12,7 +9,7 @@ class TemplateController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const { characteristics } = req.body as CharacteristicBody;
+      const { characteristics } = req.body;
       const categoryDb: CategoryModel =
         await categoryService.findCategoryByName(req.params.name);
       await templateService.createProductTemplate(categoryDb, characteristics);
@@ -29,8 +26,9 @@ class TemplateController {
     try {
       const categoryDb: CategoryModel =
         await categoryService.findCategoryByName(req.params.name);
-      const templates: ICharacteristic[] =
-        await templateService.getProductTemplateRecurs(categoryDb);
+      const templates = await templateService.getProductTemplateRecurs(
+        categoryDb
+      );
       res.status(200).json({ templates });
     } catch (error) {
       next(error);

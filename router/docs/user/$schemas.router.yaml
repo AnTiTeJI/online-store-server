@@ -27,6 +27,7 @@ components:
           type: string
         adress:
           type: string
+
     Product:
       properties:
         products:

@@ -6,7 +6,7 @@ import categoryService from "./category.service";
 class TemplateService {
   async createProductTemplate(
     category: CategoryModel,
-    characteristics: ICharacteristic[]
+    characteristics: string[]
   ): Promise<void> {
     const dbTemplate: TemplateModel = await category.getTemplate();
     if (dbTemplate) dbTemplate.destroy();
@@ -16,17 +16,16 @@ class TemplateService {
   }
   async getProductTemplateRecurs(
     category: CategoryModel
-  ): Promise<ICharacteristic[]> {
-    let chs: ICharacteristic[] = [];
+  ): Promise<ICharacteristic[] | string[]> {
+    let chs: string[] = [];
     const templateDb: TemplateModel = await category.getTemplate();
     if (category.ParentId) {
       const categoryDb: CategoryModel = await categoryService.findCategoryById(
         category.ParentId
       );
-      const chsDb: ICharacteristic[] = await this.getProductTemplateRecurs(
-        categoryDb
-      );
-      if (chsDb) chs = chs.concat(chsDb);
+      const chsDb: ICharacteristic[] | string[] =
+        await this.getProductTemplateRecurs(categoryDb);
+      if (ApiFunction.isStringArray(chsDb)) chs = chs.concat(chsDb);
     }
     return chs.concat(JSON.parse(templateDb.characteristics));
   }

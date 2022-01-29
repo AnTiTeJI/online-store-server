@@ -16,7 +16,9 @@ paths:
       responses:
         200:
           $ref: "#components/responses/resSuccess"
-        400:
-          $ref: "#components/responses/badRequest"
+        401:
+          $ref: "#components/responses/unathorized"
         403:
           $ref: "#components/responses/forbidden"
+        404:
+          $ref: "#components/responses/notFound"

@@ -14,6 +14,7 @@ export const swaggerDocument = jsdoc({
   },
   apis: [
     __dirname + "/user/*.router.yaml",
+    __dirname + "/product/*.router.yaml",
     __dirname + "/category/*.router.yaml",
   ],
 });

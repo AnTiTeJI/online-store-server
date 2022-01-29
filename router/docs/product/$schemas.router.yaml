@@ -1,0 +1,78 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ProductRequestBody:
+      properties:
+        product:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            price:
+              type: integer
+            count: 
+              type: integer
+            discount:
+              type: integer
+            description:
+              type: string
+        categories:
+          type: array
+          items:
+            type: string
+        characteristics:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value: 
+                type: string
+    ProductFullBody:
+      properties:
+        product:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            price:
+              type: integer
+            count: 
+              type: integer
+            discount:
+              type: integer
+            description:
+              type: string
+        categories:
+          type: array
+          items:
+            type: string
+        characteristics:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value: 
+                type: string
+        preference:
+          type: object
+          properties:
+            rating:
+              type: integer
+            popular:
+              type: integer
+      
+
+            
