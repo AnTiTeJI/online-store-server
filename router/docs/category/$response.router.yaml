@@ -1,0 +1,51 @@
+components:
+  responses:
+    forbidden:
+      description: forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              msg:
+                type: string
+          example:
+            msg: Forbidden
+    badRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              msg:
+                type: string
+          example:
+            msg: Bad request
+    tokenSuccess:
+      description: Success
+      headers:
+        Cookie:
+          name: refresh
+          description: Refresh token
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              access:
+                type: string
+            Authorization:
+          example:
+            access: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEifQ.BQmWM1mXBfpTw_Tv-yR3qodI0OoRmrm3Tlz6ZR60Yi4
+    resSuccess:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              msg:
+                type: string
+          example:
+            msg: Success

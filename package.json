@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.ts",
     "dev": "ts-node-dev index.ts",
-    "tsc": "tsc"
+    "build": "npx eslint --fix ./ && tsc",
+    "dev:js": "nodemon $dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -39,11 +40,14 @@
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-promise": "^5.2.0",
     "nodemon": "^2.0.15",
+    "prettier-eslint": "^13.0.0",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0",
     "ts-node-dev": "^1.1.8",

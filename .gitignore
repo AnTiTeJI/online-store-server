@@ -3,3 +3,4 @@ static
 *.env
 tsconfig.json
 .eslintrc.js
+$dist

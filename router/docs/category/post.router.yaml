@@ -1,0 +1,111 @@
+paths:
+  /login:
+    post:
+      tags:
+        - User
+      summary: User login and save refresh token in the cookies
+      produces:
+        - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/User"
+            example:
+              email: user@gmail.com
+              password: password_123
+      responses:
+        200:
+          $ref: "#components/responses/tokenSuccess"
+        400:
+          $ref: "#components/responses/badRequest"
+
+  /registration:
+    post:
+      tags:
+        - User
+      summary: User registration and save refresh token in the cookies
+      produces:
+        - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/User"
+            example:
+              email: user@gmail.com
+              password: password_123
+      responses:
+        201:
+          $ref: "#components/responses/tokenSuccess"
+        400:
+          $ref: "#components/responses/badRequest"
+
+  /basket/pr:id/add:
+    post:
+      tags:
+        - User
+      summary: Add product to basket
+      produces:
+        - application/json
+      parameters:
+        - id:
+          type: integer
+          description: Product id
+          required: true
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: "#components/responses/tokenSuccess"
+        400:
+          $ref: "#components/responses/badRequest"
+        403:
+          $ref: "#components/responses/forbidden"
+
+  /basket/buy:
+    post:
+      tags:
+        - User
+      summary: Buy all products from user card
+      produces:
+        - application/json
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          $ref: "#components/responses/tokenSuccess"
+        400:
+          $ref: "#components/responses/badRequest"
+        403:
+          $ref: "#components/responses/forbidden"
+
+  /id:id/roles/add:
+    post:
+      tags:
+        - User
+      summary: Add roles to user
+      produces:
+        - application/json
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                roles:
+                  type: array
+                  items:
+                    type: string
+            example:
+              - Manager
+              - Seller
+      responses:
+        200:
+          $ref: "#components/responses/tokenSuccess"
+        400:
+          $ref: "#components/responses/badRequest"
+        403:
+          $ref: "#components/responses/forbidden"
